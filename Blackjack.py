@@ -16,6 +16,8 @@ userScore = 0
 userCardCount = 0
 dealerScore = 0
 dealerCardCount = 0
+userWinCount = 0
+dealerWinCount = 0
 stillPlaying = True
 stillPlayingDealer = True
 
@@ -41,6 +43,9 @@ def userPlay():
             print "Your current score is "+ str(userScore)
             if(userScore > 21):
                 print "You are busted! Game Over"
+                global dealerWinCount
+                dealerWinCount = dealerWinCount + 1
+                finalScore()
                 gameOver()
             userMove = " "
 
@@ -54,6 +59,9 @@ def dealerPlay():
     print "Dealer score is "+ str(dealerScore)
     if(dealerScore > 21):
         print "Dealer busted! You win!!"
+        global userWinCount
+        userWinCount = userWinCount + 1
+        finalScore()
         gameOver()
     global stillPlayingDealer
     while(stillPlayingDealer == True):
@@ -67,6 +75,8 @@ def dealerPlay():
             print "Dealer current score is "+ str(dealerScore)
             if(dealerScore > 21):
                 print "Dealer busted! You win!!"
+                userWinCount = userWinCount + 1
+                finalScore()
                 gameOver()
             dealerMove = " "
 
@@ -111,11 +121,28 @@ def deal():
         generateCardUser()
     if(userScore > 21):
         print "You are busted! Game Over"
+        global dealerWinCount
+        dealerWinCount = dealerWinCount + 1
+        finalScore()
         gameOver()
     else:
         print "Your score is "+ str(userScore)
         while(dealerCardCount < 2):
             generateCardDealer()
+
+def finalScore():
+    global userWinCount
+    global dealerWinCount
+    print "Number of Hands won by User" + str(userWinCount)
+    print "------------------------------------------------------"
+    print "Number of Hands won by Dealer" + str(dealerWinCount)
+    if(userWinCount > dealerWinCount):
+        print "Good going!"
+    elif(userWinCount < dealerWinCount):
+        print "Buck up!"
+    else:
+        print "It's a tie!"
+
 
 def play():
     #A boolean array to check if the card is in play or not
@@ -137,9 +164,15 @@ def play():
     dealerPlay()
     if(dealerScore > userScore):
         print "Dealer wins"
+        global dealerWinCount
+        dealerWinCount = dealerWinCount + 1
+        finalScore()
         gameOver()
     else:
         print "You win"
+        global userWinCount
+        userWinCount = userWinCount + 1
+        finalScore()
         gameOver()
 
 def main():
